@@ -1,81 +1,101 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { getVideoData } from "./store/actions";
-import { VideoPlayer, VideoPlayerContainer } from "./styles";
-import PlayerControls from "./PlayerControls";
+import { VideoPlayer, VideoPlayerWrapper } from "./styles";
+import VideoControlsComponent from "./VideoControlsComponent";
 import Spinner from "../../components/Spinner";
 
-function VideoPLayer({ getVideoData, data }) {
-  const videoPl = useRef(null);
-  const videoPlCon = useRef(null);
+function VideoPlayerContainer({ getVideoData, data }) {
+  const videoEl = useRef(null);
+  const videoContainerEl = useRef(null);
   const [play, togglePlay] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [fullscreen, setFullscreen] = useState(false);
   const [currentTime, updateCurrentTime] = useState(0);
 
-  const duration = videoPl.current ? videoPl.current.duration : 0;
+  const duration = videoEl.current ? videoEl.current.duration : 0;
 
   const handleOnClick = () => {
-    play ? videoPl.current.pause() : videoPl.current.play();
+    play ? videoEl.current.pause() : videoEl.current.play();
     togglePlay(!play);
   };
 
-  const handleOnStop = () => {
-    videoPl.current.pause();
+  const handleStop = () => {
+    videoEl.current.pause();
     togglePlay(false);
-    videoPl.current.currentTime = 0;
+    videoEl.current.currentTime = 0;
   };
 
   const handleVolumeChange = (e) => {
     let currVolume;
     if (e.type === "click") {
       currVolume = volume ? 0 : 0.5;
-      videoPl.current.volume = currVolume;
+      videoEl.current.volume = currVolume;
     } else if (e.type === "change") {
       currVolume = e.target.value / 10;
-      videoPl.current.volume = currVolume;
+      videoEl.current.volume = currVolume;
     }
 
     setVolume(currVolume);
   };
 
   const toggleFullScreen = () => {
-    if (!fullscreen && videoPlCon.current.mozRequestFullScreen) {
-      videoPlCon.current.mozRequestFullScreen();
-    } else if (!fullscreen && videoPlCon.current.webkitRequestFullScreen) {
-      videoPlCon.current.webkitRequestFullScreen();
+    if (!fullscreen) {
+      if (videoContainerEl.current.requestFullscreen) {
+        videoContainerEl.current.requestFullscreen();
+      } else if (videoContainerEl.current.mozRequestFullScreen) {
+        videoContainerEl.current.mozRequestFullScreen();
+      } else if (videoContainerEl.current.webkitRequestFullscreen) {
+        videoContainerEl.current.webkitRequestFullscreen();
+      } else if (videoContainerEl.current.msRequestFullscreen) {
+        videoContainerEl.current.msRequestFullscreen();
+      }
     }
-
-    fullscreen && document.exitFullscreen();
-
-    setFullscreen(!fullscreen); //refactor
+    if (document.fullscreenElement !== null) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
   };
 
   const handleCurrentTimeChange = (updatedTime) => {
-    videoPl.current.currentTime = updatedTime;
+    videoEl.current.currentTime = updatedTime;
   };
 
   useEffect(() => {
     !data && getVideoData();
 
-    videoPl.current &&
-      videoPl.current.addEventListener("loadedmetadata", () => {
-        videoPl.current.volume = volume;
+    if (videoEl.current) {
+      videoEl.current.addEventListener("loadedmetadata", () => {
+        videoEl.current.volume = volume;
         setInterval(() => {
-          videoPl.current && updateCurrentTime(videoPl.current.currentTime);
+          videoEl.current && updateCurrentTime(videoEl.current.currentTime);
         }, 10);
       });
-  });
+    }
+
+    if (videoContainerEl.current) {
+      videoContainerEl.current.addEventListener("fullscreenchange", () => {
+        setFullscreen(!fullscreen);
+      });
+    }
+  }, [data, fullscreen, getVideoData, volume]);
 
   return data ? (
-    <VideoPlayerContainer ref={videoPlCon}>
-      <VideoPlayer ref={videoPl} controls={false} onClick={handleOnClick}>
+    <VideoPlayerWrapper ref={videoContainerEl}>
+      <VideoPlayer ref={videoEl} controls={false} onClick={handleOnClick}>
         <source src={data.videoURL} type={data.videoFormat} />
       </VideoPlayer>
-      <PlayerControls
+      <VideoControlsComponent
         play={play}
         togglePlay={handleOnClick}
-        handleOnStop={handleOnStop}
+        handleStop={handleStop}
         currentTime={currentTime}
         duration={duration}
         volume={volume}
@@ -83,7 +103,7 @@ function VideoPLayer({ getVideoData, data }) {
         handleCurrentTimeChange={handleCurrentTimeChange}
         toggleFullScreen={toggleFullScreen}
       />
-    </VideoPlayerContainer>
+    </VideoPlayerWrapper>
   ) : (
     <Spinner />
   );
@@ -98,4 +118,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(mapState, mapDispatch)(VideoPLayer);
+export default connect(mapState, mapDispatch)(VideoPlayerContainer);

@@ -16,7 +16,6 @@ export const VideoPlayer = styled.video`
 `;
 
 export const VideoPlayerPanel = styled.div`
-  position: relative;
   width: 100%;
 `;
 
@@ -30,7 +29,7 @@ export const VideoPlayerControlsContainer = styled.div`
   color: white;
 `;
 
-export const VideoPlayerWrapper = styled.div`
+export const VideoPlayerContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

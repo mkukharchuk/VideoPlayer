@@ -1,6 +1,6 @@
 import React from "react";
-import VideoPlayerDuration from "./Duration";
-import VideoPlayerVolume from "./Volume";
+import VideoDurationComponent from "./VideoDurationComponent";
+import VideoVolumeComponent from "./VideoVolumeComponent";
 import transformTime from "../../utils/transformTime";
 import {
   VideoPlayerControlsContainer,
@@ -16,7 +16,7 @@ import { ReactComponent as FullScreenIcon } from "../../assets/fullscreenIcon.sv
 function PlayerControls({
   play,
   togglePlay,
-  handleOnStop,
+  handleStop,
   currentTime,
   duration,
   volume,
@@ -30,7 +30,7 @@ function PlayerControls({
 
   return (
     <VideoPlayerPanel>
-      <VideoPlayerDuration
+      <VideoDurationComponent
         currentTime={currentTime}
         duration={duration}
         handleCurrentTimeChange={handleCurrentTimeChange}
@@ -42,11 +42,11 @@ function PlayerControls({
           ) : (
             <PlayIcon onClick={togglePlay} />
           )}
-          <StopIcon onClick={handleOnStop} />
+          <StopIcon onClick={handleStop} />
           <div>{time}</div>
         </LeftPanelControls>
         <RightPanelControls>
-          <VideoPlayerVolume
+          <VideoVolumeComponent
             volume={volume}
             handleVolumeChange={handleVolumeChange}
           />
