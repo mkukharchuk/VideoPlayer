@@ -1,22 +1,25 @@
 import { put, takeLatest, call } from "redux-saga/effects";
 import { getVideoData } from "../../../services/apiRoutes";
-
+import { normalizedVideoData } from "./normalize";
 import {
   VIDEO_DATA_REQUESTED,
   VIDEO_DATA_SUCCESS,
   VIDEO_DATA_ERROR,
 } from "./actions";
-import { normilizedVideoData } from "./normalize";
 
 export function* apiSideEffect(action) {
   try {
     const {
       data: { data },
     } = yield call(getVideoData);
-    yield put({
-      type: VIDEO_DATA_SUCCESS,
-      payload: normilizedVideoData(data[0]),
-    });
+
+    if (data.length && data[0].url && data[0].format === "mp4") {
+      // Note: Some kind of check that we really got the video from BE
+      yield put({
+        type: VIDEO_DATA_SUCCESS,
+        payload: normalizedVideoData(data[0]),
+      });
+    } else put({ type: VIDEO_DATA_ERROR, payload: "Video was not provided" });
   } catch (e) {
     yield put({ type: VIDEO_DATA_ERROR, payload: e.message });
   }

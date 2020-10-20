@@ -1,5 +1,5 @@
-export const normilizedVideoData = (data) => ({
+export const normalizedVideoData = (data) => ({
   name: data.name,
   videoURL: data.url,
-  videoFromat: `format/${data.format}`,
+  videoFormat: `format/${data.format}`,
 });

@@ -8,6 +8,7 @@ import Spinner from "../../components/Spinner";
 function VideoPlayerContainer({ getVideoData, data }) {
   const videoEl = useRef(null);
   const videoContainerEl = useRef(null);
+  const [isLoaded, setLoaded] = useState(false);
   const [play, togglePlay] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [fullscreen, setFullscreen] = useState(false);
@@ -73,15 +74,18 @@ function VideoPlayerContainer({ getVideoData, data }) {
 
     if (videoEl.current) {
       videoEl.current.addEventListener("loadedmetadata", () => {
+        console.log("here");
         videoEl.current.volume = volume;
+        setLoaded(true);
         setInterval(() => {
           videoEl.current && updateCurrentTime(videoEl.current.currentTime);
         }, 10);
       });
     }
 
-    if (videoContainerEl.current) {
-      videoContainerEl.current.addEventListener("fullscreenchange", () => {
+    if (data && videoContainerEl.current) {
+      videoContainerEl.current.addEventListener("fullscreenchange", (e) => {
+        console.log(e);
         setFullscreen(!fullscreen);
       });
     }
@@ -90,19 +94,21 @@ function VideoPlayerContainer({ getVideoData, data }) {
   return data ? (
     <VideoPlayerWrapper ref={videoContainerEl}>
       <VideoPlayer ref={videoEl} controls={false} onClick={handleOnClick}>
-        <source src={data.videoURL} type={data.videoFormat} />
+        <source src={data.videoURL} typo={data.videoFormat} />
       </VideoPlayer>
-      <VideoControlsComponent
-        play={play}
-        togglePlay={handleOnClick}
-        handleStop={handleStop}
-        currentTime={currentTime}
-        duration={duration}
-        volume={volume}
-        handleVolumeChange={handleVolumeChange}
-        handleCurrentTimeChange={handleCurrentTimeChange}
-        toggleFullScreen={toggleFullScreen}
-      />
+      {isLoaded ? (
+        <VideoControlsComponent
+          play={play}
+          togglePlay={handleOnClick}
+          handleStop={handleStop}
+          currentTime={currentTime}
+          duration={duration}
+          volume={volume}
+          handleVolumeChange={handleVolumeChange}
+          handleCurrentTimeChange={handleCurrentTimeChange}
+          toggleFullScreen={toggleFullScreen}
+        />
+      ) : null}
     </VideoPlayerWrapper>
   ) : (
     <Spinner />

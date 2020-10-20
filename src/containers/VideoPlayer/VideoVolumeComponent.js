@@ -14,7 +14,6 @@ function PlayerControls({ volume, handleVolumeChange }) {
         )}
         <VolumeRange
           type="range"
-          orient="vertical"
           onChange={handleVolumeChange}
           value={volume * 10}
           min="0"

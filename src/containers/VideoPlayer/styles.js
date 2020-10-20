@@ -28,6 +28,10 @@ export const VideoPlayerControlsContainer = styled.div`
   justify-content: space-between;
   background-color: #262626;
   color: white;
+
+  & svg {
+    cursor: pointer;
+  }
 `;
 
 export const VideoPlayerWrapper = styled.div`
@@ -78,13 +82,15 @@ export const VideoPlayerDurationComponent = styled.div`
 
 export const TrackComponent = styled.div`
   width: 100%;
-  background-color: black;
+  background-color: grey;
   height: 100%;
 `;
-export const TrackTime = styled.div`
+
+export const TrackTime = styled.div.attrs((props) => ({
+  style: { width: props.width },
+}))`
   height: 100%;
   background-color: red;
-  width: ${(props) => props.width};
 `;
 
 export const VolumeRange = styled.input`
@@ -97,6 +103,7 @@ export const VolumeRange = styled.input`
   background: none;
   width: 85px;
   margin-left: 5px;
+  cursor: pointer;
   animation: 1s ${fadeIn} ease-out;
 
   &::-webkit-slider-runnable-track {
@@ -107,12 +114,13 @@ export const VolumeRange = styled.input`
   }
 
   &::-moz-range-track {
-    background-color: #606670;
+    background-color: #d7dbdd;
     height: 6px;
     border-radius: 3px;
     border: none;
   }
   &::-ms-track {
+    background-color: #d7dbdd;
     color: transparent;
     border: none;
     background: none;

@@ -1,3 +1,18 @@
+## HTML5 Video Player with custom controls
+
+Netco Sports technical task<br />
+Detailed description: https://docs.google.com/document/d/1QD5KxdyAmK6IlB9HBLjGml9sI-PRIRmqjk1La7SYK4w/edit#
+
+### Steps to run the project
+
+##### 1. `git clone git@github.com:mkukharchuk/VideoPlayer.git`
+
+##### 2. `cd VideoPlayer`
+
+##### 3. `yarn install`
+
+##### 4. `yarn start`
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
