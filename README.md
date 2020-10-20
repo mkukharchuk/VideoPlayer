@@ -13,6 +13,12 @@ Detailed description: https://docs.google.com/document/d/1QD5KxdyAmK6IlB9HBLjGml
 
 ##### 4. `yarn start`
 
+## Environment variables
+
+REACT_APP_DATA_API_URL - data source URL</br>
+In the application just used .env.development.example to speed up the setup.</br>
+In normal case real env files should be in .gitignore.</br>
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

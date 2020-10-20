@@ -74,7 +74,6 @@ function VideoPlayerContainer({ getVideoData, data }) {
 
     if (videoEl.current) {
       videoEl.current.addEventListener("loadedmetadata", () => {
-        console.log("here");
         videoEl.current.volume = volume;
         setLoaded(true);
         setInterval(() => {
@@ -84,8 +83,7 @@ function VideoPlayerContainer({ getVideoData, data }) {
     }
 
     if (data && videoContainerEl.current) {
-      videoContainerEl.current.addEventListener("fullscreenchange", (e) => {
-        console.log(e);
+      videoContainerEl.current.addEventListener("fullscreenchange", () => {
         setFullscreen(!fullscreen);
       });
     }
@@ -94,7 +92,7 @@ function VideoPlayerContainer({ getVideoData, data }) {
   return data ? (
     <VideoPlayerWrapper ref={videoContainerEl}>
       <VideoPlayer ref={videoEl} controls={false} onClick={handleOnClick}>
-        <source src={data.videoURL} typo={data.videoFormat} />
+        <source src={data.videoURL} type={data.videoFormat} />
       </VideoPlayer>
       {isLoaded ? (
         <VideoControlsComponent

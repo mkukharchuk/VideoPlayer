@@ -15,11 +15,11 @@ function VideoPlayerDuration({
   const width = (currentTime * 100) / duration;
 
   const handleOnClick = ({ clientX }) => {
-    const firstPoint = timeTrackRef.current.getBoundingClientRect().left;
+    const trackFirstPoint = timeTrackRef.current.getBoundingClientRect().left;
     const trackLength = timeTrackRef.current.getBoundingClientRect().width;
-    const mausePosition = clientX - firstPoint;
-    const newVal = (duration * mausePosition) / trackLength;
-    handleCurrentTimeChange(newVal);
+    const mousePosition = clientX - trackFirstPoint;
+    const newCurrentTime = (duration * mousePosition) / trackLength;
+    handleCurrentTimeChange(newCurrentTime);
   };
 
   return (

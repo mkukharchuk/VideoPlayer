@@ -1,4 +1,5 @@
 import styled, { keyframes } from "styled-components";
+import breakpoints from "../../styles/breakpoints";
 
 const fadeIn = keyframes`
   0% {
@@ -38,9 +39,8 @@ export const VideoPlayerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 70%;
+  width: 100%;
   height: auto;
-  min-width: 300px;
 
   box-shadow: 0 0 15px black;
 
@@ -49,6 +49,14 @@ export const VideoPlayerWrapper = styled.div`
       position: absolute;
       bottom: 0;
     }
+  }
+
+  @media ${breakpoints.mobile} {
+    width: 80%;
+  }
+
+  @media ${breakpoints.laptop} {
+    width: 70%;
   }
 `;
 

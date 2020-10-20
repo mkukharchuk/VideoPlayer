@@ -1,6 +1,10 @@
-const transformTime = (ms) => {
-  var minutes = Math.floor(ms / 60);
-  var seconds = ms.toFixed(0) - minutes * 60;
+/**
+ * Transform seconds into the format 'minutes':'seconds' (1:00)
+ * @param {Number} sec Time in seconds
+ */
+const transformTime = (sec) => {
+  const minutes = Math.floor(sec / 60);
+  const seconds = sec.toFixed(0) - minutes * 60;
   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 };
 

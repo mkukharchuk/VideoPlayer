@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: `https://dl.dropboxusercontent.com/s/jse5lx9xnmcav51`,
+  baseURL: process.env.REACT_APP_DATA_API_URL,
 });
