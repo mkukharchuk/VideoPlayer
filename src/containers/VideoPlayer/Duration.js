@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import {
   VideoPlayerDurationComponent,
@@ -6,12 +6,25 @@ import {
   TrackTime,
 } from "./styles";
 
-function VideoPlayerDuration({ duration, currentTime }) {
+function VideoPlayerDuration({
+  duration,
+  currentTime,
+  handleCurrentTimeChange,
+}) {
+  const timeTrackRef = useRef(null);
   const width = (currentTime * 100) / duration;
+
+  const handleOnClick = ({ clientX }) => {
+    const firstPoint = timeTrackRef.current.getBoundingClientRect().left;
+    const trackLength = timeTrackRef.current.getBoundingClientRect().width;
+    const mausePosition = clientX - firstPoint;
+    const newVal = (duration * mausePosition) / trackLength;
+    handleCurrentTimeChange(newVal);
+  };
 
   return (
     <VideoPlayerDurationComponent>
-      <TrackComponent>
+      <TrackComponent ref={timeTrackRef} onClick={handleOnClick}>
         <TrackTime width={`${width}%`} />
       </TrackComponent>
     </VideoPlayerDurationComponent>
